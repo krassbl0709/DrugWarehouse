@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.city.warehouse.dao.GoodstypeDao">
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultType="com.city.warehouse.entity.Goodstype">
+        select * from goodstype
+        <where>
+            <if test="searchText!=null and searchText!=''">
+                and type like "%"#{searchText}"%"
+            </if>
+        </where>
+    </select>
+
+    <!--查询全部数据-->
+    <select id="selectTypeAll" resultType="com.city.warehouse.entity.Goodstype">
+        select * from goodstype
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="uuid" useGeneratedKeys="true">
+        insert into goodstype (type)
+        values (#{type})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update goodstype
+        <set>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+        </set>
+        where uuid = #{uuid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteByIds">
+        delete from goodstype
+        <where>
+            <if test="ids.size != 0 ">
+                AND uuid IN
+                <foreach collection="ids" item="ids" index="index" open="(" close=")" separator=",">
+                    #{ids}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+</mapper>
+

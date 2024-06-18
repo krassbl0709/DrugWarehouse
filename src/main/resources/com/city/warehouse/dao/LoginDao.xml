@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.city.warehouse.dao.LoginDao">
+    <select id="login" resultType="java.lang.Integer">
+        select count(id)
+        from user
+        where username = #{username}
+          and password = #{password}
+    </select>
+    <select id="getRole" resultType="com.city.warehouse.entity.UserRole">
+        select *
+        from user_role
+        where user_uuid = #{id}
+    </select>
+    <select id="getRoleMenu" resultType="com.city.warehouse.entity.RoleMenu">
+        select *
+        from role_menu
+        where role_uuid = #{uuid}
+    </select>
+    <select id="getFirstMenu" resultType="com.city.warehouse.entity.Menu">
+        select * from menu where menu_id = #{id} and pid = 0
+    </select>
+    <select id="getSecondMenu" resultType="com.city.warehouse.dto.MenuDto">
+        select * from menu where menu_id = #{id} and pid > 0
+    </select>
+</mapper>

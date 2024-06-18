@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.city.warehouse.dao.GoodsDao">
+    <insert id="addDrug">
+        INSERT INTO goods ( NAME, origin, producer, unit, in_price, out_price, goods_type_uuid )
+        VALUES
+            (#{name},#{origin},#{producer},#{unit},#{inPrice},#{outPrice},#{goodsTypeUuid})
+    </insert>
+    <update id="updateDrug">
+        UPDATE goods
+        SET
+            `name` = #{name},
+            origin = #{origin},
+            producer = #{producer},
+            unit = #{unit},
+            in_price = #{inPrice},
+            out_price = #{outPrice},
+            goods_type_uuid = #{goodsTypeUuid}
+        WHERE uuid = #{uuid}
+</update>
+    <delete id="delDrug">
+        delete from goods where uuid = #{id}
+    </delete>
+    <select id="selectDrug" resultType="com.city.warehouse.dto.GoodsAndTypeDto">
+        SELECT
+            g.uuid,
+            g.NAME,
+            g.origin,
+            g.producer,
+            g.unit,
+            g.in_price,
+            g.out_price,
+            g.goods_type_uuid,
+            gt.type
+        FROM
+            goods g,
+            goodstype gt
+        WHERE
+            g.goods_type_uuid = gt.uuid
+    </select>
+<!--    查询所有药品-->
+    <select id="selectAllDrug" resultType="com.city.warehouse.entity.Goods">
+        select * from goods
+    </select>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.city.warehouse.dao.InDrugdetailDao">
+    <insert id="addInDrugdetail">
+        insert into in_drugdetail(goods_uuid, num, money, end_time, ender, state, create_time, applicant)
+        values (#{goodsUuid},#{num},#{money},#{endTime},#{ender},#{state},#{createTime},#{applicant})
+    </insert>
+    <update id="addDrugNum">
+        update goods
+        set num = num + #{num}
+        where uuid = #{goodsUuid}
+    </update>
+    <update id="passInDrugdetail">
+        update in_drugdetail
+        set state = 1,end_time = #{endTime},ender = #{ender}
+        where uuid = #{uuid}
+    </update>
+    <update id="notPassInDrugdetail">
+        update in_drugdetail
+        set state = 2,end_time = #{endTime},ender = #{ender}
+        where uuid = #{uuid}
+    </update>
+    <select id="selectInDrugdetail" resultType="com.city.warehouse.dto.InDrugdetailAndGoodsDto">
+        select i.uuid,
+               i.goods_uuid,
+               g.name,
+               i.num,
+               money,
+               state,
+               create_time,
+               applicant,
+               origin,
+               producer,
+               unit,
+               in_price,
+               out_price,
+               gt.type
+        from in_drugdetail i,
+             goods g,
+             goodstype gt
+        where i.goods_uuid = g.uuid
+          and g.goods_type_uuid = gt.uuid
+          and state = 0
+        order by uuid desc
+    </select>
+    <select id="selectInDrugdetailAll" resultType="com.city.warehouse.dto.InDrugdetailAndGoodsDto">
+        select i.uuid,
+               i.goods_uuid,
+               g.name,
+               i.num,
+               money,
+               state,
+               create_time,
+               applicant,
+               end_time,
+               ender,
+               origin,
+               producer,
+               unit,
+               in_price,
+               out_price,
+               gt.type
+        from in_drugdetail i,
+             goods g,
+             goodstype gt
+        where i.goods_uuid = g.uuid
+          and g.goods_type_uuid = gt.uuid
+        <if test="name != null and name !=''">
+            and name like "%"#{name}"%"
+
+        </if>
+        <if test="num != null and num !=''">
+            and i.num = #{num}
+        </if>
+        <if test="inPrice != null and inPrice !=''">
+            and in_price = #{inPrice}
+        </if>
+        <if test="outPrice != null and outPrice !=''">
+            and out_price = #{outPrice}
+        </if>
+        <if test="startCreateTime != null and finalCreateTime != null">
+            and create_time >= #{startCreateTime}  and create_time  &lt; #{finalCreateTime}
+        </if>
+        <if test="applicant != null and applicant !=''">
+            and applicant like "%"#{applicant}"%"
+        </if>
+        <if test="startEndTime != null and finalEndTime != null">
+            and end_time >= #{startEndTime}  and end_time  &lt; #{finalEndTime}
+        </if>
+        <if test="ender != null and ender !=''">
+            and ender like "%"#{ender}"%"
+        </if>
+        <if test="state != null and state !=''">
+            and state = #{state}
+        </if>
+        order by uuid desc
+    </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.city.warehouse.dao.StatisticsDao">
+    <select id="selectDrugType" resultType="com.city.warehouse.dto.DrugTypeStatisticsDto">
+        SELECT
+            type,
+            SUM( num ) num
+        FROM
+            goods g,
+            goodstype gt
+        WHERE
+            g.goods_type_uuid = gt.uuid
+        GROUP BY
+            type
+    </select>
+    <select id="selectDrug" resultType="com.city.warehouse.dto.DrugStatisticsDto">
+        SELECT
+            `name`,
+            num
+        FROM
+            goods
+    </select>
+</mapper>

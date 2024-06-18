@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.city.warehouse.dao.DrugContentDao">
+    <select id="selectDrugContent" resultType="com.city.warehouse.dto.DrugContentDto">
+        SELECT
+        g.uuid,
+        NAME,
+        origin,
+        producer,
+        unit,
+        in_price,
+        out_price,
+        goods_type_uuid,
+        num,
+        type
+        FROM
+        goods g,
+        goodstype t
+        WHERE
+        g.goods_type_uuid = t.uuid
+        <if test="name != null and name !=''">
+            and name like "%"#{name}"%"
+        </if>
+        <if test="origin != null and origin !=''">
+            and origin like "%"#{origin}"%"
+        </if>
+        <if test="inPrice != null and inPrice !=''">
+            and in_price = #{inPrice}
+        </if>
+        <if test="outPrice != null and outPrice !=''">
+            and out_price = #{outPrice}
+        </if>
+        <if test="goodsTypeUuid != null and goodsTypeUuid !=''">
+            and goods_type_uuid = #{goodsTypeUuid}
+        </if>
+    </select>
+</mapper>
